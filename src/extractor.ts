@@ -19,15 +19,12 @@ function convertMemoPositionToKey(memoPosition: MemoPosition) {
 function generateBracesPrefixAndSufix(input: string): BraceLocationInfo {
   const prefix: number[] = [];
   const suffix: number[] = [];
-  const braceCounter: Map<number, number> = new Map();
 
   for (let i = 0; i < input.length; i++) {
     if (input[i] == LBRACE) {
       prefix.push(i);
-      braceCounter.set(i, prefix.length - suffix.length);
     } else if (input[i] == RBRACE) {
       suffix.push(i);
-      braceCounter.set(i, prefix.length - suffix.length);
     }
   }
 
