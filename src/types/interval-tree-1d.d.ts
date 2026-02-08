@@ -1,31 +1,39 @@
 declare module "interval-tree-1d" {
-  type Interval = [number, number];
+    type Interval = [number, number];
 
-  interface IntervalTreeNode {
-    mid: number;
-    left: IntervalTreeNode | null;
-    right: IntervalTreeNode | null;
-    leftPoints: Interval[];
-    rightPoints: Interval[];
-    count: number;
-    intervals(result?: Interval[]): Interval[];
-    insert(interval: Interval): void;
-    remove(interval: Interval): number;
-    queryPoint(x: number, cb: (interval: Interval) => any): any;
-    queryInterval(lo: number, hi: number, cb: (interval: Interval) => any): any;
-  }
+    interface IntervalTree {
+        readonly count: number;
+        insert(interval: Interval): void;
+        readonly intervals: Interval[];
+        queryInterval(
+            lo: number,
+            hi: number,
+            cb: (interval: Interval) => any,
+        ): any;
+        queryPoint(x: number, cb: (interval: Interval) => any): any;
+        remove(interval: Interval): boolean;
+        root: IntervalTreeNode | null;
+    }
 
-  interface IntervalTree {
-    root: IntervalTreeNode | null;
-    insert(interval: Interval): void;
-    remove(interval: Interval): boolean;
-    queryPoint(x: number, cb: (interval: Interval) => any): any;
-    queryInterval(lo: number, hi: number, cb: (interval: Interval) => any): any;
-    readonly count: number;
-    readonly intervals: Interval[];
-  }
+    interface IntervalTreeNode {
+        count: number;
+        insert(interval: Interval): void;
+        intervals(result?: Interval[]): Interval[];
+        left: IntervalTreeNode | null;
+        leftPoints: Interval[];
+        mid: number;
+        queryInterval(
+            lo: number,
+            hi: number,
+            cb: (interval: Interval) => any,
+        ): any;
+        queryPoint(x: number, cb: (interval: Interval) => any): any;
+        remove(interval: Interval): number;
+        right: IntervalTreeNode | null;
+        rightPoints: Interval[];
+    }
 
-  function createWrapper(intervals?: Interval[]): IntervalTree;
+    function createWrapper(intervals?: Interval[]): IntervalTree;
 
-  export = createWrapper;
+    export = createWrapper;
 }

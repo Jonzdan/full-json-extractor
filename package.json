@@ -1,34 +1,46 @@
 {
   "name": "full-json-extractor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist build .cache",
-    "format": "prettier --check \"src/**/*.{js,ts,tsx,jsx,json,css,md}",
-    "format:fix": "prettier --write \"src/**/*.{js,ts,tsx,jsx,json,css,md}",
+    "format": "eslint .",
+    "format:fix": "eslint . --fix",
     "build": "tsc",
     "test": "jest",
     "release": "npm run format && npm run test && npm run build"
   },
   "keywords": [
     "json",
-    "json parse",
-    "json extract"
+    "extract-json",
+    "json-extractor",
+    "parse-json",
+    "top-level-json",
+    "malformed-json",
+    "data",
+    "object"
   ],
   "author": "Jonzdan",
   "license": "ISC",
   "description": "Brute-forces all possible highest-level json candidates with pruning to keep performance fast with reasonable payload < 1MB",
   "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "@types/eslint": "^9.6.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.2.1",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "jest": "^30.0.5",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.54.0"
   },
   "dependencies": {
+    "denque": "^2.1.0",
     "interval-tree-1d": "^1.0.4"
   },
   "publishConfig": {
