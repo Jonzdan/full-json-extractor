@@ -7,7 +7,7 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 --- 
 
-## [1.0.4] - Unreleased
+## [1.0.4] - 2026-02-09
 
 ### Added
 - Changelog
@@ -15,6 +15,8 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ### Changed
 - Removed dependencies and reduced memory by switching to nested loops
+
+[Commit](https://github.com/Jonzdan/full-json-extractor/commit/522fa1d2bb7c0f48a81f279951a2e1518c152f83)
 
 ---
 

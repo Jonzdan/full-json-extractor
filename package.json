@@ -1,6 +1,6 @@
 {
   "name": "full-json-extractor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist build .cache",
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jonzdan/full-json-extractor.git"
+    "url": "git+https://github.com/Jonzdan/full-json-extractor.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
