@@ -1,12 +1,7 @@
-import IntervalTree from "interval-tree-1d";
-
 import {
     BraceLocationInfo,
-    IntervalTreeType,
     Limit,
-    MemoPosition,
 } from "./interfaces";
-import Denque from "denque";
 
 const LBRACE = "{";
 const RBRACE = "}";
@@ -36,81 +31,43 @@ export function extractJsons<T = unknown>(
     return findValidJsons<T>(locations, input, limit);
 }
 
-function setMapValue(
-    memo: Map<number, Set<number>>,
-    leftIndex: number,
-    rightIndex: number,
-): boolean {
-    let set = memo.get(leftIndex);
-    if (!set) {
-        set = new Set<number>();
-        memo.set(leftIndex, set);
-    }
-    if (set.has(rightIndex)) {
-        return false;
-    }
-    set.add(rightIndex);
-    return true;
-}
 
 function findValidJsons<T = unknown>(
     { prefix, suffix }: BraceLocationInfo,
     input: string,
     limit: Limit,
 ): T[] {
-    const tree = IntervalTree();
-    const queue = new Denque<MemoPosition>([[0, suffix.length - 1]]);
-    const memo = new Map<number, Set<number>>([
-        [0, new Set([suffix.length - 1])],
-    ]);
     const jsons: T[] = [];
+    let maxRight = -1;
 
-    while (!queue.isEmpty()) {
-        const [leftIndex, rightIndex] = queue.shift()!;
-        const leftPosition: number = prefix[leftIndex]!;
-        const rightPosition: number = suffix[rightIndex]!;
+    for (let l = 0; l < prefix.length; l++) {
+        const leftPosition = prefix[l]!;
 
-        if (
-            rightPosition < leftPosition ||
-            queryIntervalSync(tree, leftPosition, rightPosition)
-        ) {
+        if (leftPosition <= maxRight) {
             continue;
         }
-
-        const set = memo.get(leftIndex)!;
-        set.delete(rightIndex);
-
-        try {
-            if (
-                isBalancedWithOneJson(input, leftPosition, rightPosition, limit)
-            ) {
-                jsons.push(
-                    JSON.parse(input.slice(leftPosition, rightPosition + 1)),
-                );
-                tree.insert([leftPosition, rightPosition]);
+        for (let r = suffix.length - 1; r >= 0; r--) {
+            const rightPosition = suffix[r]!;
+            if (rightPosition < leftPosition) {
                 continue;
             }
-        } catch (error) {
-            if (!(error instanceof SyntaxError)) {
-                throw error as JsonExtractError;
+            
+            try {
+                if (
+                    isBalancedWithOneJson(input, leftPosition, rightPosition, limit)
+                ) {
+                    jsons.push(
+                        JSON.parse(input.slice(leftPosition, rightPosition + 1)),
+                    );
+                    maxRight = rightPosition;
+                    break;
+                }
+            } catch (error) {
+                if (!(error instanceof SyntaxError)) {
+                    throw error as JsonExtractError;
+                }
             }
-        }
-        if (
-            rightIndex - 1 >= 0 &&
-            setMapValue(memo, leftIndex, rightIndex - 1)
-        ) {
-            queue.push([leftIndex, rightIndex - 1]);
-        }
 
-        if (
-            leftIndex + 1 < prefix.length &&
-            setMapValue(memo, leftIndex + 1, rightIndex)
-        ) {
-            queue.push([leftIndex + 1, rightIndex]);
-        }
-
-        if (!set.size) {
-            memo.delete(leftIndex);
         }
     }
     return jsons;
@@ -189,7 +146,9 @@ function isBalancedWithOneJson(
             continue;
         }
 
-        if (inString) continue;
+        if (inString) {
+            continue;
+        }
 
         if (char === LBRACE) {
             braceCount++;
@@ -210,19 +169,4 @@ function isBalancedWithOneJson(
     }
 
     return braceCount === 0;
-}
-
-function queryIntervalSync(
-    tree: IntervalTreeType,
-    low: number,
-    high: number,
-): boolean {
-    let intervalExists = false;
-    tree.queryInterval(low, high, ([left, right]: [number, number]) => {
-        if (left < low && high < right) {
-            intervalExists = true;
-            return;
-        }
-    });
-    return intervalExists;
 }
