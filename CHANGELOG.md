@@ -13,6 +13,9 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 - Changelog
 - Github Repostiory Link
 
+### Changed
+- Removed dependencies and reduced memory by switching to nested loops
+
 ---
 
 ## [1.0.3] - 2026-02-08

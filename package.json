@@ -13,10 +13,8 @@
   "keywords": [
     "json",
     "extract-json",
-    "json-extractor",
-    "parse-json",
-    "top-level-json",
-    "malformed-json",
+    "json-extract",
+    "extract",
     "data",
     "object"
   ],
@@ -38,10 +36,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.54.0"
-  },
-  "dependencies": {
-    "denque": "^2.1.0",
-    "interval-tree-1d": "^1.0.4"
   },
   "repository": {
     "type": "git",

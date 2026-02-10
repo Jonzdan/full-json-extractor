@@ -3,3 +3,5 @@ eslint.config.js
 jest.config.js
 src/
 .env
+*/benchmark.*
+*/interfaces.*
